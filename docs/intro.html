@@ -1,0 +1,79 @@
+
+    <html>
+        <head>
+            <link href="./../config/prism.css" rel="stylesheet">
+            <link href="./../config/site.css" rel="stylesheet">
+            <script src="./../config/prism.js"></script>
+
+            <title>intro.md</title>
+
+            <script>
+                /* Resisze the iframes on load */
+                function resizeIframe(obj) {
+                    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+                }
+            </script>
+        </head>
+        <body>
+            
+    <ul>
+        <li><a href="./intro.html">intro.md</a></li><li><a href="./content.html">content.md</a></li>
+    </ul>
+
+            <h1 id="introduction">Introduction</h1>
+<p>This is my Block</p>
+<pre><code class="jsx language-jsx">return &lt;div&gt;This is the result&lt;/div&gt;;
+</code></pre>
+<div>
+  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.0.html" src="intro.example.0.html">
+  </iframe>
+  <div>
+    <pre><code class="language-javascript">
+const item = {
+  name: "Carlos",
+  age: 24
+};
+const { name, age } = item;
+const { MyComponent, SimpleComponent } = MyLibrary;
+return (
+  &lt;div&gt;
+    &lt;span&gt;{name}&lt;/span&gt;
+    &lt;MyComponent /&gt;
+    &lt;SimpleComponent /&gt;
+  &lt;/div&gt;
+);
+</code></pre></div>
+</div>
+<p>And we can heve a lot of examples in our code:</p>
+<div>
+  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.1.html" src="intro.example.1.html">
+  </iframe>
+  <div>
+    <pre><code class="language-javascript">
+const Content = ({ title, children }) =&gt; (
+  &lt;div&gt;
+    &lt;h3&gt;{title}&lt;/h3&gt;
+    {children}
+  &lt;/div&gt;
+);
+return (
+  &lt;div&gt;
+    &lt;Content title="First item"&gt;This is the content&lt;/Content&gt;
+    &lt;Content title="Second item"&gt;This is the content&lt;/Content&gt;
+  &lt;/div&gt;
+);
+</code></pre></div>
+</div>
+<p>And something else</p>
+<div>
+  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.2.html" src="intro.example.2.html">
+  </iframe>
+  <div>
+    <pre><code class="language-javascript">
+const woot = 12;
+return null;
+</code></pre></div>
+</div>
+        </body>
+    </html>
+  

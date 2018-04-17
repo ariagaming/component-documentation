@@ -1,0 +1,51 @@
+<html>
+
+  <head>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <script src="./main.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script>
+      "use strict";
+
+      var createComponent = function createComponent() {
+        var Content = function Content(_ref) {
+          var title = _ref.title,
+            children = _ref.children;
+          return React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "h3",
+              null,
+              title
+            ),
+            children
+          );
+        };
+        return React.createElement(
+          "div",
+          null,
+          React.createElement(
+            Content, {
+              title: "First item"
+            },
+            "This is the content"
+          ),
+          React.createElement(
+            Content, {
+              title: "Second item"
+            },
+            "This is the content"
+          )
+        );
+      };;
+      ReactDOM.render(createComponent(), document.getElementById("root"));
+    </script>
+  </body>
+
+</html>
