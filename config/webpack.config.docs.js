@@ -1,12 +1,13 @@
 const path = require("path");
 const webpack = require("webpack");
-const appSettings = require("./settings");
 
 module.exports = {
   entry: "./../src/index.js",
   output: {
-    path: path.normalize(__dirname, "../crap"),
-    filename: "main.js"
+    path: path.join(__dirname, "/../docs"),
+    filename: "main.js",
+    library: "MyLibrary",
+    libraryTarget: "var"
   },
   module: {
     rules: [
@@ -16,10 +17,13 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"]
+            presets: ["env", "react"],
+            plugins: ["transform-object-rest-spread"]
           }
         }
       }
     ]
   }
 };
+
+//plugins: [new webpack.IgnorePlugin(/react/, /prop-types/)]

@@ -1,39 +1,92 @@
+<html>
 
-    <html>
-        <head>
-            <link href="./../config/prism.css" rel="stylesheet">
-            <link href="./../config/site.css" rel="stylesheet">
-            <script src="./../config/prism.js"></script>
+  <head>
+    <link href="/prism.css" rel="stylesheet">
+    <link href="/site.css" rel="stylesheet">
+    <script src="/prism.js"></script>
 
-            <title>intro.md</title>
+    <title>intro.md</title>
 
-            <script>
-                /* Resisze the iframes on load */
-                function resizeIframe(obj) {
-                    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-                }
-            </script>
-        </head>
-        <body>
-            
-    <ul>
-        <li><a href="./intro.html">intro.md</a></li><li><a href="./content.html">content.md</a></li>
-    </ul>
+    <script>
+      /* Resisze the iframes on load */
+      function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+      }
 
-            <h1 id="introduction">Introduction</h1>
-<p>This is my Block</p>
-<pre><code class="jsx language-jsx">return &lt;div&gt;This is the result&lt;/div&gt;;
+      function show(e) {
+        e.classList.contains("hidden") ?
+          e.classList.remove("hidden") :
+          e.classList.add("hidden");
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="nav">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="selected">
+          <a href="./intro.html">intro.md</a>
+        </li>
+        <li class="">
+          <a href="./content.html">content.md</a>
+        </li>
+        <li class="">
+          <a href="./modelBuilder.html">modelBuilder.md</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <h1 id="introduction">Introduction</h1>
+      <p>This is my Block 4</p>
+      <pre><code class="jsx language-jsx">return &lt;div&gt;This is the result&lt;/div&gt;;
 </code></pre>
-<div>
-  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.0.html" src="intro.example.0.html">
-  </iframe>
-  <div>
-    <pre><code class="language-javascript">
+      <div>
+        <h3>PropTypes: SimpleComponent</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Required</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>title</td>
+              <td>custom</td>
+              <td>false</td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            <tr>
+              <td>something</td>
+              <td>custom</td>
+              <td>false</td>
+              <td></td>
+              <td></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <p>Changed,</p>
+      <div>
+        <h3>Example</h3>
+        <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.0.html" src="intro.example.0.html">
+        </iframe>
+        <div>
+          <pre class="sample-code hidden" onclick="show(this)"><code class="language-javascript">
 const item = {
   name: "Carlos",
   age: 24
 };
 const { name, age } = item;
+console.log(MyLibrary);
 const { MyComponent, SimpleComponent } = MyLibrary;
 return (
   &lt;div&gt;
@@ -43,13 +96,14 @@ return (
   &lt;/div&gt;
 );
 </code></pre></div>
-</div>
-<p>And we can heve a lot of examples in our code:</p>
-<div>
-  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.1.html" src="intro.example.1.html">
-  </iframe>
-  <div>
-    <pre><code class="language-javascript">
+      </div>
+      <p>And we can heve a lot of examples in our code:</p>
+      <div>
+        <h3>Example</h3>
+        <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.1.html" src="intro.example.1.html">
+        </iframe>
+        <div>
+          <pre class="sample-code hidden" onclick="show(this)"><code class="language-javascript">
 const Content = ({ title, children }) =&gt; (
   &lt;div&gt;
     &lt;h3&gt;{title}&lt;/h3&gt;
@@ -63,17 +117,19 @@ return (
   &lt;/div&gt;
 );
 </code></pre></div>
-</div>
-<p>And something else</p>
-<div>
-  <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.2.html" src="intro.example.2.html">
-  </iframe>
-  <div>
-    <pre><code class="language-javascript">
+      </div>
+      <p>And something else</p>
+      <div>
+        <h3>Example</h3>
+        <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="intro.example.2.html" src="intro.example.2.html">
+        </iframe>
+        <div>
+          <pre class="sample-code hidden" onclick="show(this)"><code class="language-javascript">
 const woot = 12;
 return null;
 </code></pre></div>
-</div>
-        </body>
-    </html>
-  
+      </div>
+    </div>
+  </body>
+
+</html>

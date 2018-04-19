@@ -1,19 +1,23 @@
 const pretty = require("pretty");
+const PropTypes = require("prop-types");
+const parsePropTypes = require("parse-prop-types").default;
 const fs = require("fs");
 const path = require("path");
 const babel = require("babel-core");
 const webpack = require("webpack");
 const setup = require("./documentation/setup");
 const showdown = require("showdown");
+//let config = require("./config/webpack.config.docs");
 
-const config = {
+let config = {
   entry: "./src/index.js",
   output: {
-    path: __dirname + "/docs",
+    path: path.join(__dirname, "/docs"),
     filename: "main.js",
     library: "MyLibrary",
     libraryTarget: "var"
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -22,7 +26,8 @@ const config = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["env", "react"]
+            presets: ["env", "react"],
+            plugins: ["transform-object-rest-spread"]
           }
         }
       }
@@ -32,30 +37,47 @@ const config = {
 
 webpack(config, function(err, stats) {
   if (err) console.log(err);
+  else {
+    config.output.filename = "terse.js";
+    config.output.libraryTarget = "this";
+    config.output.library = "s";
+
+    console.log(JSON.stringify(config, null, 2));
+
+    webpack(config, function(err, stats) {
+      if (err) console.log(err);
+      else {
+        renderDocuments();
+      }
+    });
+  }
 });
 
-let pageName;
-let currentIndex = 0;
-const pluginA = function() {
-  return {
-    type: "lang",
-    regex: /```jsx example\n[\s\S]*?\n```/g,
-    replace: function(fullText) {
-      const innerText = fullText.replace("jsx example", "").replace(/```/g, "");
+function renderDocuments() {
+  let pageName;
+  let currentIndex = 0;
+  const pluginReactExample = function() {
+    return {
+      type: "lang",
+      regex: /```jsx example\n[\s\S]*?\n```/g,
+      replace: function(fullText) {
+        const innerText = fullText
+          .replace("jsx example", "")
+          .replace(/```/g, "");
 
-      const r = babel.transform(
-        `const createComponent = () => { ${innerText} };`,
-        {
-          presets: ["env", "react"]
-        }
-      );
-      const name = pageName + ".example." + currentIndex++ + ".html";
-      const script = `
+        const r = babel.transform(
+          `const createComponent = () => { ${innerText} };`,
+          {
+            presets: ["env", "react"]
+          }
+        );
+        const name = pageName + ".example." + currentIndex++ + ".html";
+        const script = `
         ${r.code};
         ReactDOM.render(createComponent(), document.getElementById("root"));
       `;
 
-      const source = `
+        const source = `
         <html>
             <head>
                 <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
@@ -68,12 +90,13 @@ const pluginA = function() {
                 <script>${script}</script>
             </body>
         </html>`;
-      fs.writeFileSync("docs/" + name, pretty(source), "utf8");
-      const escapedInnerText = innerText
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-      return pretty(`
+        fs.writeFileSync("docs/" + name, pretty(source), "utf8");
+        const escapedInnerText = innerText
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        return pretty(`
         <div>
+            <h3>Example</h3>
             <iframe
                 frameborder="0"
                 scrolling="no"
@@ -82,36 +105,96 @@ const pluginA = function() {
                 src="${name}">
             </iframe>
         <div>
-        <pre><code class="language-javascript">${escapedInnerText}</code></pre></div></div>`);
-    }
+        <pre class="sample-code hidden" onclick="show(this)"><code class="language-javascript">${escapedInnerText}</code></pre></div></div>`);
+      }
+    };
   };
-};
-showdown.extension("pluginA", pluginA);
-const converter = new showdown.Converter({
-  extensions: ["pluginA"]
-});
+  showdown.extension("pluginReactExample", pluginReactExample);
 
-const header = `
-    <ul>
-        ${setup.chapters
-          .map(chapter => {
-            return `<li><a href="./${
-              chapter.split(".")[0]
-            }.html">${chapter}</a></li>`;
-          })
-          .join("")}
-    </ul>
-`;
+  const pluginPropTypes = function() {
+    return {
+      type: "lang",
+      regex: /^PROPTYPES: .*$/gm,
+      replace: function(fullText) {
+        const Source = require("./docs/terse").s;
+        const p = fullText.replace("PROPTYPES:", "").trim();
+        const component = Source[p];
 
-setup.chapters.forEach(chapter => {
-  pageName = chapter.split(".")[0];
-  const page = fs.readFileSync(`./documentation/${chapter}`, "utf8");
-  const parsed = `
+        const getPropTypesTableRows = () => {
+          const parsedPropTypes = parsePropTypes(component);
+          const result = Object.entries(parsedPropTypes)
+            .map(([key, entry]) => {
+              return `
+                    <tr>
+                        <td>${key}</td>
+                        <td>${entry.type.name}</td>
+                        <td>${entry.required.toString()}</td>
+                        <td>${entry.default || ""}</td>
+                        <td>${entry.description || ""}</td>
+                    </tr>
+                `;
+            })
+            .join("");
+          return result;
+        };
+
+        if (component) {
+          return pretty(`
+          <div>
+            <h3>PropTypes: ${p}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${getPropTypesTableRows()}
+                    </tbody>
+                </table>
+           </div> `);
+        }
+
+        return "";
+      }
+    };
+  };
+  showdown.extension("pluginPropTypes", pluginPropTypes);
+
+  const converter = new showdown.Converter({
+    extensions: ["pluginReactExample", "pluginPropTypes"]
+  });
+
+  const header = __chapter => {
+    console.log(__chapter);
+    return pretty(`
+        <ul>
+            ${setup.chapters
+              .map(chapter => {
+                return `<li class="${
+                  __chapter === chapter ? "selected" : ""
+                }" ><a href="./${
+                  chapter.split(".")[0]
+                }.html">${chapter}</a></li>`;
+              })
+              .join("")}
+        </ul>
+    `);
+  };
+
+  setup.chapters.forEach(chapter => {
+    pageName = chapter.split(".")[0];
+    const page = fs.readFileSync(`./documentation/${chapter}`, "utf8");
+    const parsed = `
     <html>
         <head>
-            <link href="./../config/prism.css" rel="stylesheet">
-            <link href="./../config/site.css" rel="stylesheet">
-            <script src="./../config/prism.js"></script>
+            <link href="/prism.css" rel="stylesheet">
+            <link href="/site.css" rel="stylesheet">
+            <script src="/prism.js"></script>
 
             <title>${chapter}</title>
 
@@ -120,13 +203,24 @@ setup.chapters.forEach(chapter => {
                 function resizeIframe(obj) {
                     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
                 }
+                function show(e) {
+                    e.classList.contains("hidden") ?
+                        e.classList.remove("hidden") :
+                        e.classList.add("hidden");
+                }
             </script>
         </head>
         <body>
-            ${header}
-            ${converter.makeHtml(page)}
+            <div class="nav">
+                <h3>Navigation</h3>
+                ${header(chapter)}
+            </div>
+            <div class="content">
+                ${converter.makeHtml(page)}
+            </div>
         </body>
     </html>
   `;
-  fs.writeFileSync(`./docs/${pageName}.html`, parsed, "utf8");
-});
+    fs.writeFileSync(`./docs/${pageName}.html`, pretty(parsed), "utf8");
+  });
+}

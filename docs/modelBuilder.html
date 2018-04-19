@@ -1,0 +1,79 @@
+<html>
+
+  <head>
+    <link href="/prism.css" rel="stylesheet">
+    <link href="/site.css" rel="stylesheet">
+    <script src="/prism.js"></script>
+
+    <title>modelBuilder.md</title>
+
+    <script>
+      /* Resisze the iframes on load */
+      function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+      }
+
+      function show(e) {
+        e.classList.contains("hidden") ?
+          e.classList.remove("hidden") :
+          e.classList.add("hidden");
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="nav">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="">
+          <a href="./intro.html">intro.md</a>
+        </li>
+        <li class="">
+          <a href="./content.html">content.md</a>
+        </li>
+        <li class="selected">
+          <a href="./modelBuilder.html">modelBuilder.md</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <h1 id="modelbuilder">Model Builder</h1>
+      <p>This is a model builder</p>
+      <div>
+        <h3>Example</h3>
+        <iframe frameborder="0" scrolling="no" onload="resizeIframe(this)" data-filename="modelBuilder.example.3.html" src="modelBuilder.example.3.html">
+        </iframe>
+        <div>
+          <pre class="sample-code hidden" onclick="show(this)"><code class="language-javascript">
+const { createModel } = MyLibrary;
+const AddressModel = createModel({
+  street: String,
+  city: String,
+  country: String
+});
+const UserModel = createModel({
+  name: "UserModel",
+  fields: {
+    name: {
+      type: String,
+      required: true
+    },
+    age: Number,
+    active: Boolean,
+    address: AddressModel
+  }
+});
+
+return (
+  &lt;div&gt;
+    &lt;pre&gt;{JSON.stringify(AddressModel, null, 2)}&lt;/pre&gt;
+    &lt;hr /&gt;
+    &lt;pre&gt;{JSON.stringify(UserModel, null, 2)}&lt;/pre&gt;
+  &lt;/div&gt;
+);
+</code></pre></div>
+      </div>
+    </div>
+  </body>
+
+</html>

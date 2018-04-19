@@ -14,6 +14,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "markdown-it": "^8.4.1",
@@ -23,12 +24,20 @@
   },
   "dependencies": {
     "chalk": "^2.3.2",
+    "chokidar": "^2.0.3",
+    "express": "^4.16.3",
+    "finalhandler": "^1.1.1",
     "glob": "^7.1.2",
+    "http-server": "^0.11.1",
+    "moment": "^2.22.1",
+    "parse-prop-types": "^0.2.0",
     "pretty": "^2.0.0",
     "prism": "^4.1.2",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-prism": "^4.3.2",
+    "rimraf": "^2.6.2",
+    "serve-static": "^1.13.2",
     "showdown": "^1.8.6"
   }
 }

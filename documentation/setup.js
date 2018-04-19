@@ -1,3 +1,3 @@
 module.exports = {
-  chapters: ["intro.md", "content.md"]
+  chapters: ["intro.md", "content.md", "modelBuilder.md"]
 };

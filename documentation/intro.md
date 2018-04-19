@@ -1,10 +1,14 @@
 # Introduction
 
-This is my Block
+This is my Block 4
 
 ```jsx
 return <div>This is the result</div>;
 ```
+
+PROPTYPES: SimpleComponent
+
+Changed,
 
 ```jsx example
 const item = {
@@ -12,6 +16,7 @@ const item = {
   age: 24
 };
 const { name, age } = item;
+console.log(MyLibrary);
 const { MyComponent, SimpleComponent } = MyLibrary;
 return (
   <div>
